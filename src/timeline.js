@@ -87,6 +87,8 @@
 
   function smooth(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
 
+  var PHASE_SFX = { cabling: "insert", power: "power", lock: "chime", home: "whoosh" };
+
   function enterPhase(i) {
     idx = i; pt = 0;
     var ph = phases[i];
@@ -114,6 +116,7 @@
     } else if (ph.id === "home") {
       LS8.Parts.flyOut(0);
     }
+    if (LS8.Audio && PHASE_SFX[ph.id]) LS8.Audio.play(PHASE_SFX[ph.id]);
     var pins = PINNED[ph.id];
     LS8.Labels.setPinned(pins ? pins() : []);
   }
