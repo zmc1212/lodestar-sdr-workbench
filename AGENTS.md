@@ -37,3 +37,5 @@ Fig. 07 — one software radio, one satellite pass, 22 parts in from the left）
 浏览器实现说明：标签用 CSS 层投影（`src/labels.js`），仪表盘为 DOM+Canvas
 （`src/dashboard.js`），3D 为 three.js r149（UMD 版）+ 自写轨道相机。改代码后若
 画面未更新，先确认没有使用缓存（tools/serve.py 已禁缓存）。
+
+音效：首次点击/按键自动启用（合成音，零素材），右上角 🔊/🔇 可切换；零件落座、阶段切换、打字均配音。
