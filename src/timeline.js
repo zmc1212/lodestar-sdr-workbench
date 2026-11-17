@@ -5,7 +5,7 @@
       cam: { theta: -0.62, phi: 0.96, r: 8.2, target: [0, 0.25, 0] }, drift: 0.045 },
     { id: "cabling", name: "CABLING · PORT TO PORT", dur: 4.6, dot: "teal",
       cam: { theta: -0.95, phi: 0.88, r: 6.2, target: [-0.5, 0.2, 0.3] }, drift: 0.02 },
-    { id: "power", name: "POWER ON · 13.5 V", dur: 2.8, dot: "green",
+    { id: "power", name: "POWER ON · 13.5V IN → 12V RAIL", dur: 2.8, dot: "green",
       cam: { theta: -0.7, phi: 0.85, r: 4.4, target: [0.62, 0.25, 0.12] }, drift: 0.015 },
     { id: "tune", name: "TUNE · DISPLAY · PMOD", dur: 3.2, dot: "blue",
       cam: { theta: -1.3, phi: 0.98, r: 3.6, target: [0.3, 0.15, 1.25] }, drift: 0.012 },
@@ -28,7 +28,7 @@
       ];
     },
     power: function () {
-      return [{ id: "p-board", obj: LS8.Scene3D.board, text: "POWER ON · 13.5 V" }];
+      return [{ id: "p-board", obj: LS8.Scene3D.board, text: "13.5V IN → 12V RAIL" }];
     },
     tune: function () {
       return [
@@ -71,7 +71,7 @@
       ppm: 0, temp: 24, satFactor: 0,
       rails: { v12: 0, v5: 0, v33: 0, v18: 0, vio: 0 }, totalW: 0,
       fpgaTemp: 31, fpgaCount: 0, lut: 0, ff: 0, dsp: 0, bram: 0,
-      up: 0, specPeak: 0, specPeakPos: 0.72, waterGain: 0
+      up: 0, specPeak: 0, specPeakPos: 0.5, waterGain: 0
     };
     powerOnAt = -1; packetsOnAt = -1; ledLast = "";
   }
@@ -171,12 +171,12 @@
       ? state.rails.v12 * 0.42 + state.rails.v5 * 0.55 + state.rails.v33 * 0.6 + state.rails.v18 * 0.8 + state.rails.vio * 0.45 + flutter * e
       : 0;
 
-    /* ---- GPSDO 时钟 ---- */
+    /* ---- GPSDO 时钟（锁定后 <0.01 ppm，OCXO 按真实暖机速率爬温） ---- */
     if (state.power) {
       var tp = state.time - powerOnAt;
       var settle = Math.exp(-tp / 1.35);
-      state.ppm = 119 * settle + (-0.9) * (1 - settle) + Math.sin(state.time * 0.8) * 0.4;
-      state.temp = 24 + 26 * smooth(tp / 9);
+      state.ppm = 119 * settle + 0.006 * (1 - settle) + Math.sin(state.time * 0.8) * 0.003;
+      state.temp = 24 + 26 * smooth(tp / 160);
       state.satFactor = Math.min(1, Math.max(0, (tp - 0.5) / 2.5));
     } else { state.ppm = 0; state.temp = 24; state.satFactor = 0; }
 
@@ -195,17 +195,21 @@
       state.specPeak = 0.92 * ramp;
       state.waterGain = Math.min(1, state.waterGain + dt * 0.5);
       if (state.mode !== "LOCK" && ph.id === "lock") state.mode = "LOCK";
-      state.freq = 437.8 + Math.sin(state.time * 0.9) * 0.004;
+      /* LEO 过境多普勒：437.8 MHz 时 ±10 kHz 量级，谱峰随之漂移 */
+      state.dop = state.mode === "LOCK" ? Math.sin(state.time * 0.7) * 9600
+        : (ph.id === "track" ? Math.sin(state.time * 0.7) * 9600 * smooth(pt / 3) : 0);
+      state.freq = 437.8 + state.dop / 1e6;
+      state.specPeakPos = 0.5 + (state.freq - 437.8) / 1.0;  // 1 MHz 跨度
     }
     if (state.packetsActive) {
       var rate = ph.id === "scan" ? 0.8 : (ph.id === "track" ? 2.2 : 3.4);
       state.packets += rate * dt;
       var tpk = state.time - packetsOnAt;
-      state.evm = 3.4 + 26 * Math.exp(-tpk / 2.6) + Math.sin(state.time * 1.3) * 0.3;
       state.snr = 9.2 + 3.4 * smooth(tpk / 4);
+      /* EVM 与 SNR 物理一致（QPSK：EVM% ≈ √(10^(−SNR/10))×100） */
+      state.evm = Math.sqrt(Math.pow(10, -state.snr / 10)) * 100 + Math.sin(state.time * 1.3) * 0.3;
       state.rms = 0.78 + Math.sin(state.time * 0.7) * 0.02;
     }
-    state.dop = state.mode === "LOCK" ? Math.sin(state.time * 0.7) * 0.8 : 0;
 
     /* ---- FPGA ---- */
     if (state.power) {
@@ -220,7 +224,7 @@
     dom.mode.className = "mode" + (state.mode === "LOCK" ? " lock" : "");
     dom.freq.textContent = (ph.id === "tune" || state.mode === "SCAN" || state.mode === "TRACK" || state.mode === "LOCK")
       ? state.freq.toFixed(3) + " MHz" : "—";
-    dom.dop.textContent = state.mode === "LOCK" ? (state.dop >= 0 ? "+" : "") + state.dop.toFixed(1) + " Hz" : "— Hz";
+    dom.dop.textContent = state.dop ? (state.dop >= 0 ? "+" : "") + (state.dop / 1000).toFixed(2) + " kHz" : "— kHz";
     dom.parts.textContent = state.parts + " / 22";
     var label = ph.name;
     if (ph.id === "assembly") label = "ASSEMBLY · " + state.parts + " / 22";

@@ -53,7 +53,7 @@
     ctx.fillStyle = "#0a0f18";
     ctx.fillRect(0, 0, 256, 160);
   });
-  var touchOnTex = LS8.Textures.screenUI("437.803 MHz");
+  var touchOnTex = LS8.Textures.screenUI("437.800 MHz");
   var touchScreenMat = new THREE.MeshStandardMaterial({ map: touchOffTex, roughness: 0.3, metalness: 0.1 });
 
   function setAnchor(g, y) {
@@ -84,8 +84,8 @@
       return g;
     }, 0);
 
-    /* 2 · ADC 板 */
-    def("adc", "ADC · 56 MHz", "7AV", [-0.85, -1.6], 0.32, 0.3, function () {
+    /* 2 · ADC 板（AD9226，中频 10.7 MHz 采样） */
+    def("adc", "ADC · 56 MS/s", "AD9226 · IF 10.7 MHZ", [-0.85, -1.6], 0.32, 0.3, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.52, 0.035, 0.36), M.purple));
       g.add(mesh(new THREE.BoxGeometry(0.16, 0.05, 0.16), M.chip, -0.1, 0.04, 0));
@@ -124,7 +124,7 @@
 
     /* 6 · 8位数码管显示 */
     var ledFaceMat = new THREE.MeshStandardMaterial({ map: ledTex, emissiveMap: ledTex, emissive: 0xffffff, emissiveIntensity: 0, roughness: 0.4 });
-    def("led", "8 DIGIT DISPLAY", "LED · 437.802", [-0.35, 1.25], 0.12, 0.3, function () {
+    def("led", "8 DIGIT DISPLAY", "LED · 437.800", [-0.35, 1.25], 0.12, 0.3, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.64, 0.035, 0.24), M.blue));
       var mod = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.1, 0.16),

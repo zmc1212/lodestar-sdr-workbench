@@ -21,8 +21,8 @@
   function buildDOM() {
     var dash = document.getElementById("dash");
     dash.innerHTML =
-      '<section class="panel"><header><i class="dot teal"></i><b>SPECTRUM</b><span class="meta">RX-1 · 5 MHZ SPAN</span></header>' +
-      '<div class="body"><canvas id="c-spec"></canvas><div class="axis"><span>436.2 MHz</span><span>437.2 MHz</span></div></div></section>' +
+      '<section class="panel"><header><i class="dot teal"></i><b>SPECTRUM</b><span class="meta">RX-1 · 1 MHZ SPAN</span></header>' +
+      '<div class="body"><canvas id="c-spec"></canvas><div class="axis"><span>437.3 MHz</span><span>438.3 MHz</span></div></div></section>' +
 
       '<section class="panel"><header><i class="dot pink"></i><b>I/Q</b><span class="meta">QPSK · 96k</span></header>' +
       '<div class="body"><canvas id="c-iq"></canvas><div class="iq-stats">' +
@@ -233,7 +233,7 @@
       if (!bars[i].firstChild) bars[i].appendChild(document.createElement("b"));
       bars[i].firstChild.style.height = fill + "%";
     }
-    document.getElementById("clk-err").textContent = st.power ? (st.ppm >= 0 ? "+" : "") + (st.ppm * 40).toFixed(1) + " Hz" : "—— Hz";
+    document.getElementById("clk-err").textContent = st.power ? (st.ppm >= 0 ? "+" : "") + (st.ppm * 10).toFixed(2) + " Hz" : "—— Hz";
     document.getElementById("clk-ppm").innerHTML = (st.power ? (st.ppm >= 0 ? "" : "") + Math.abs(st.ppm).toFixed(1) : "0.0") + " <small>ppm</small>";
     document.getElementById("clk-temp").textContent = st.temp.toFixed(1);
 

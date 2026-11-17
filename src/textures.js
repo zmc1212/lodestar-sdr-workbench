@@ -68,30 +68,42 @@
     });
   }
 
-  /* PCB：基色 + 走线 + 焊盘 + 丝印 */
+  /* PCB：基色 + 正交铜箔走线 + 环形过孔/焊点 + 丝印（主板附带位号） */
   function pcb(base, trace, silk) {
     return makeTex(512, 384, function (ctx, w, h) {
       ctx.fillStyle = base;
       ctx.fillRect(0, 0, w, h);
-      ctx.strokeStyle = trace;
-      ctx.lineWidth = 2;
-      var n = 26, seed = 7;
+      var seed = 7;
       function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-      for (var i = 0; i < n; i++) {
+      /* RF 段铺铜（接地铜箔） */
+      ctx.fillStyle = "rgba(255,255,255,0.05)";
+      ctx.fillRect(0, h * 0.62, w, h * 0.38);
+      /* 正交走线 + 环形过孔 */
+      ctx.strokeStyle = trace;
+      ctx.lineWidth = 2.2;
+      ctx.lineCap = "round";
+      for (var i = 0; i < 30; i++) {
         ctx.beginPath();
         var x = rnd() * w, y = rnd() * h;
         ctx.moveTo(x, y);
-        for (var s = 0; s < 4; s++) {
-          if (rnd() > 0.5) x += (rnd() - 0.5) * 140; else y += (rnd() - 0.5) * 100;
+        for (var s = 0; s < 3; s++) {
+          if (s % 2 === 0) x += (rnd() > 0.5 ? 1 : -1) * (50 + rnd() * 150);
+          else y += (rnd() > 0.5 ? 1 : -1) * (35 + rnd() * 110);
           ctx.lineTo(x, y);
         }
         ctx.stroke();
+        ctx.fillStyle = trace;
+        ctx.beginPath(); ctx.arc(x, y, 4.4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = base;
+        ctx.beginPath(); ctx.arc(x, y, 2.0, 0, Math.PI * 2); ctx.fill();
       }
-      ctx.fillStyle = "rgba(255,255,255,0.28)";
+      /* 焊点（环） */
       for (var p = 0; p < 90; p++) {
-        ctx.beginPath();
-        ctx.arc(rnd() * w, rnd() * h, 2.2, 0, Math.PI * 2);
-        ctx.fill();
+        var px = rnd() * w, py2 = rnd() * h;
+        ctx.fillStyle = trace;
+        ctx.beginPath(); ctx.arc(px, py2, 3.4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = base;
+        ctx.beginPath(); ctx.arc(px, py2, 1.5, 0, Math.PI * 2); ctx.fill();
       }
       if (silk) {
         ctx.fillStyle = "rgba(255,255,255,0.8)";
@@ -99,6 +111,25 @@
         ctx.fillText(silk, 22, 46);
         ctx.font = "15px monospace";
         ctx.fillText("REV B · 437.8 MHz", 22, 70);
+      }
+      if (silk === "LODESTAR") {
+        /* 主板位号丝印：U/C/R/J/Y + 接地过孔排 */
+        ctx.fillStyle = "rgba(255,255,255,0.75)";
+        ctx.font = "bold 13px monospace";
+        var tags = [
+          ["U1 FPGA", 300, 96], ["U2 DDR3L", 388, 176], ["U3 CODEC", 240, 210],
+          ["U4 LDO", 120, 200], ["U5 XO", 176, 250], ["Y1 27 MHZ", 60, 260],
+          ["J1", 118, 330], ["J2", 212, 330], ["J3", 306, 330], ["J4", 400, 330],
+          ["J8 USB", 468, 120], ["J11 PWR", 468, 250], ["JTAG J5", 350, 60]
+        ];
+        tags.forEach(function (t) { ctx.fillText(t[0], t[1], t[2]); });
+        /* 去耦电容丝印 C1-C12 */
+        ctx.font = "10px monospace";
+        for (var c = 0; c < 12; c++) {
+          ctx.fillText("C" + (c + 1), 268 + (c % 4) * 34, 140 + Math.floor(c / 4) * 18);
+        }
+        ctx.font = "10px monospace";
+        for (var r6 = 0; r6 < 6; r6++) ctx.fillText("R" + (r6 + 1), 60 + r6 * 30, 150);
       }
     });
   }

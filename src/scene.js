@@ -143,9 +143,19 @@
     g.add(mesh(new THREE.BoxGeometry(0.24, 0.07, 0.24), M.white, 0.18, 0.075, -0.3));
     // DDR3L 小条
     g.add(mesh(new THREE.BoxGeometry(0.3, 0.05, 0.12), M.chip, 0.35, 0.06, 0.05));
-    // 晶振 / 小芯片
+    // 时钟发生器 XO（SI5351 级金属罐）+ 27 MHz 晶振
     g.add(mesh(new THREE.BoxGeometry(0.1, 0.03, 0.08), M.chip, -0.1, 0.05, 0.24));
+    g.add(mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.05, 10), M.silver, -0.02, 0.055, 0.36));
+    // 音频 codec（I-Q 基带）
     g.add(mesh(new THREE.BoxGeometry(0.14, 0.035, 0.1), M.chip, 0.62, 0.055, 0.18));
+    // 3.3V LDO（SOT-223，电源轨前端）
+    g.add(mesh(new THREE.BoxGeometry(0.11, 0.03, 0.09), M.chip, 0.72, 0.05, 0.4));
+    g.add(mesh(new THREE.BoxGeometry(0.06, 0.012, 0.07), M.silver, 0.72, 0.042, 0.46));
+    // 去耦电容群（0402 深灰小块，FPGA/DDR/CODEC 每颗 IC 旁成组）
+    for (var d = 0; d < 12; d++) {
+      g.add(mesh(new THREE.BoxGeometry(0.022, 0.012, 0.014), M.dark,
+        0.06 + (d % 4) * 0.09, 0.035, -0.42 + Math.floor(d / 4) * 0.05));
+    }
 
     // 电容（蓝色圆柱）
     for (var c = 0; c < 6; c++) {
@@ -154,12 +164,14 @@
         -0.72 + (c % 3) * 0.1, 0.09, 0.38 + Math.floor(c / 3) * 0.12));
     }
 
-    // 前沿 SMA 金口 x4
+    // 前沿 SMA 金口 x4（J1-J4，50Ω 射频链路入口）
     for (var s = 0; s < 4; s++) {
       var sma = mesh(new THREE.CylinderGeometry(0.036, 0.036, 0.09, 12), M.gold, -0.55 + s * 0.18, 0.06, 0.62);
       sma.rotation.x = Math.PI / 2;
       g.add(sma);
     }
+    // 射频前段屏蔽罐（J1 输入端镀锡罩）
+    g.add(mesh(new THREE.BoxGeometry(0.34, 0.07, 0.24), M.silver, -0.55, 0.1, 0.42));
 
     // USB / 网口（右缘银块）
     g.add(mesh(new THREE.BoxGeometry(0.08, 0.09, 0.22), M.silver, 0.9, 0.09, -0.28));
@@ -173,6 +185,11 @@
 
     // microSD 座
     g.add(mesh(new THREE.BoxGeometry(0.12, 0.04, 0.16), M.silver, -0.72, 0.055, 0.1));
+
+    // 安装孔 x4（M3 边角）
+    [[-0.82, -0.5], [0.82, -0.5], [-0.82, 0.5], [0.82, 0.5]].forEach(function (hp) {
+      g.add(mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.055, 10), M.gold, hp[0], 0.02, hp[1]));
+    });
 
     return g;
   }
