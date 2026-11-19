@@ -75,7 +75,7 @@
     }
 
     /* 1 · 7W 扬声器 */
-    def("speaker", "7W SPEAKER", null, [-2.05, -1.35], 0.15, 0.34, function () {
+    def("speaker", "扬声器", "7W SPEAKER", [-2.05, -1.35], 0.15, 0.34, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.CylinderGeometry(0.3, 0.32, 0.13, 28), M.plastic, 0, 0.065, 0));
       g.add(mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.05, 28), M.dark, 0, 0.14, 0));
@@ -85,7 +85,7 @@
     }, 0);
 
     /* 2 · ADC 板（AD9226，中频 10.7 MHz 采样） */
-    def("adc", "ADC · 56 MS/s", "AD9226 · IF 10.7 MHZ", [-0.85, -1.6], 0.32, 0.3, function () {
+    def("adc", "ADC 采样板 · 56 MS/s", "AD9226 · IF 10.7 MHZ", [-0.85, -1.6], 0.32, 0.3, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.52, 0.035, 0.36), M.purple));
       g.add(mesh(new THREE.BoxGeometry(0.16, 0.05, 0.16), M.chip, -0.1, 0.04, 0));
@@ -95,7 +95,7 @@
     }, 1);
 
     /* 3 · GPS 时钟模块 */
-    def("gpsclk", "GPS CLOCK", "OCXO 10 MHZ", [-1.5, -0.85], -0.2, 0.28, function () {
+    def("gpsclk", "GPS 时钟模块", "GPS CLOCK · OCXO 10 MHZ", [-1.5, -0.85], -0.2, 0.28, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.56, 0.035, 0.4), M.green));
       g.add(mesh(new THREE.BoxGeometry(0.2, 0.13, 0.14), M.silver, -0.12, 0.08, 0));
@@ -105,7 +105,7 @@
     }, 2);
 
     /* 4 · OCXO 恒温晶振 */
-    def("ocxo", "OCXO · 10 MHZ", "warm 3 min", [-2.5, -0.4], 0.1, 0.26, function () {
+    def("ocxo", "恒温晶振 · 10 MHZ", "OCXO · WARM 3 MIN", [-2.5, -0.4], 0.1, 0.26, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.32, 0.16, 0.22), M.alu));
       g.add(mesh(new THREE.BoxGeometry(0.2, 0.02, 0.1), M.silver, 0, 0.09, 0));
@@ -113,7 +113,7 @@
     }, 3);
 
     /* 5 · 7寸触摸屏 */
-    def("touch", '7" TOUCH', "PMOD", [1.95, -1.3], -0.32, 0.3, function () {
+    def("touch", '7 寸触摸屏', '7" TOUCH · PMOD', [1.95, -1.3], -0.32, 0.3, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.88, 0.05, 0.52), M.plastic));
       var scr = mesh(new THREE.PlaneGeometry(0.78, 0.42), touchScreenMat, 0, 0.028, -0.01, false);
@@ -124,7 +124,7 @@
 
     /* 6 · 8位数码管显示 */
     var ledFaceMat = new THREE.MeshStandardMaterial({ map: ledTex, emissiveMap: ledTex, emissive: 0xffffff, emissiveIntensity: 0, roughness: 0.4 });
-    def("led", "8 DIGIT DISPLAY", "LED · 437.800", [-0.35, 1.25], 0.12, 0.3, function () {
+    def("led", "8 位数码管", "8 DIGIT · LED · 437.800", [-0.35, 1.25], 0.12, 0.3, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.64, 0.035, 0.24), M.blue));
       var mod = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.1, 0.16),
@@ -136,7 +136,7 @@
     }, 5);
 
     /* 7 · 调谐编码器 */
-    def("encoder", "TUNE ENCODER", "BAND DIAL", [0.95, 1.3], -0.15, 0.26, function () {
+    def("encoder", "调谐编码器", "TUNE ENCODER · BAND DIAL", [0.95, 1.3], -0.15, 0.26, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.2, 0.03, 0.16), M.blue));
       g.add(mesh(new THREE.CylinderGeometry(0.085, 0.095, 0.14, 20), M.plastic, 0, 0.1, 0));
@@ -145,7 +145,7 @@
     }, 6);
 
     /* 8 · 偶极天线 */
-    def("dipole", "DIPOLE ANTENNA", "2M", [-3.1, -1.0], 0.5, 0.72, function () {
+    def("dipole", "偶极天线", "DIPOLE ANTENNA · 2M", [-3.1, -1.0], 0.5, 0.72, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.34, 0.035, 0.14), M.green));
       g.add(mesh(new THREE.BoxGeometry(0.1, 0.08, 0.08), M.plastic, 0, 0.06, 0));
@@ -158,7 +158,7 @@
     }, 7);
 
     /* 9 · GPS 贴片天线 */
-    def("patch", "PATCH ANTENNA", "RHCP · 7 DBIC", [-2.85, 0.4], -0.1, 0.22, function () {
+    def("patch", "贴片天线", "PATCH · RHCP · 7 DBIC", [-2.85, 0.4], -0.1, 0.22, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.3, 0.035, 0.3), M.green));
       g.add(mesh(new THREE.BoxGeometry(0.17, 0.014, 0.17), M.yellow, 0, 0.025, 0));
@@ -167,7 +167,7 @@
     }, 8);
 
     /* 10 · 腔体滤波器 */
-    def("cavity", "CAVITY BPF", "5 POLE", [-1.8, 0.6], 0.08, 0.3, function () {
+    def("cavity", "腔体滤波器", "CAVITY BPF · 5 POLE", [-1.8, 0.6], 0.08, 0.3, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.64, 0.2, 0.3), M.alu, 0, 0.1, 0));
       for (var i = 0; i < 5; i++) {
@@ -177,7 +177,7 @@
     }, 9);
 
     /* 11 · 二功分器 */
-    def("splitter", "2 WAY SPLITTER", "50 Ω", [-1.0, 0.45], -0.25, 0.2, function () {
+    def("splitter", "二功分器", "2 WAY SPLITTER · 50 Ω", [-1.0, 0.45], -0.25, 0.2, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.3, 0.1, 0.2), M.alu, 0, 0.05, 0));
       var p1 = mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.05, 10), M.gold, 0, 0.12, 0);
@@ -190,7 +190,7 @@
     }, 10);
 
     /* 12 · 50Ω 假负载 */
-    def("load", "50 Ω LOAD", "2W", [-0.45, 0.75], 0.2, 0.18, function () {
+    def("load", "假负载", "50 Ω LOAD · 2W", [-0.45, 0.75], 0.2, 0.18, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.CylinderGeometry(0.09, 0.1, 0.04, 16), M.silver, 0, 0.02, 0));
       g.add(mesh(new THREE.SphereGeometry(0.085, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), M.plastic, 0, 0.04, 0));
@@ -198,7 +198,7 @@
     }, 11);
 
     /* 13 · LNA 模块 */
-    def("lna", "LNA", "NF 0.6 DB", [-2.35, 1.35], 0.18, 0.18, function () {
+    def("lna", "低噪声放大器", "LNA · NF 0.6 DB", [-2.35, 1.35], 0.18, 0.18, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.42, 0.1, 0.26), M.silver, 0, 0.05, 0));
       g.add(mesh(new THREE.BoxGeometry(0.34, 0.02, 0.18), M.blue, 0, 0.11, 0));
@@ -208,7 +208,7 @@
     }, 12);
 
     /* 14 · 衰减器 */
-    def("pad", "20 DB PAD", "50 Ω", [-1.25, 1.5], -0.4, 0.16, function () {
+    def("pad", "衰减器 · 20 dB", "20 DB PAD · 50 Ω", [-1.25, 1.5], -0.4, 0.16, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.2, 0.08, 0.1), M.alu, 0, 0.04, 0));
       g.add(mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.04, 8), M.gold, -0.1, 0.05, 0));
@@ -218,7 +218,7 @@
 
     /* 15 · Logic 8 逻辑分析仪 */
     var wireCols = [0xe84f8e, 0xf2a53a, 0xf5e04b, 0x7fd8d8, 0x5b8cff, 0x8b5fd0, 0x57c46b, 0xe8e4da];
-    def("logic8", "LOGIC 8", "24 MS/S", [1.6, 1.6], 0.35, 0.18, function () {
+    def("logic8", "逻辑分析仪", "LOGIC 8 · 24 MS/S", [1.6, 1.6], 0.35, 0.18, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.32, 0.09, 0.2), M.plastic, 0, 0.05, 0));
       g.add(mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.012, 16), M.gold, 0, 0.101, 0));
@@ -235,7 +235,7 @@
 
     /* 16 · 万用表 */
     var meterScreenMat = new THREE.MeshStandardMaterial({ map: meterTex, roughness: 0.35 });
-    def("meter", "METER", "12 V RAIL", [2.6, 0.7], -0.55, 0.42, function () {
+    def("meter", "万用表", "METER · 12 V RAIL", [2.6, 0.7], -0.55, 0.42, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.34, 0.55, 0.09), M.yellow, 0, 0.275, 0));
       g.add(mesh(new THREE.BoxGeometry(0.34, 0.05, 0.09), M.dark, 0, 0.525, 0));
@@ -251,7 +251,7 @@
     }, 15);
 
     /* 17 · 跳线卷轴 */
-    def("spool", "JUMPER WIRES", "x140", [-1.95, 1.95], 0.4, 0.3, function () {
+    def("spool", "杜邦跳线", "JUMPER WIRES ×140", [-1.95, 1.95], 0.4, 0.3, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.CylinderGeometry(0.2, 0.22, 0.15, 22), M.plastic, 0, 0.08, 0));
       var coil = mesh(new THREE.TorusGeometry(0.19, 0.045, 10, 30), new THREE.MeshStandardMaterial({ color: 0xd98a2b, roughness: 0.75 }), 0, 0.17, 0);
@@ -261,7 +261,7 @@
     }, 16);
 
     /* 18 · 电烙铁 */
-    def("iron", "SOLDER IRON", "380°C", [-0.5, 2.05], 1.15, 0.16, function () {
+    def("iron", "电烙铁", "SOLDER IRON · 380°C", [-0.5, 2.05], 1.15, 0.16, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.BoxGeometry(0.14, 0.05, 0.18), M.plastic, 0.3, 0.03, 0));
       var handle = mesh(new THREE.CylinderGeometry(0.032, 0.038, 0.34, 12), new THREE.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.7 }), 0.05, 0.06, 0);
@@ -274,7 +274,7 @@
     }, 17);
 
     /* 19 · 放大镜台灯 */
-    def("lamp", "MAG LAMP", null, [-3.15, 1.85], 0.7, 0.75, function () {
+    def("lamp", "放大镜台灯", "MAG LAMP", [-3.15, 1.85], 0.7, 0.75, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.CylinderGeometry(0.16, 0.18, 0.04, 20), M.plastic, 0, 0.02, 0));
       var a1 = mesh(new THREE.BoxGeometry(0.04, 0.5, 0.04), M.dark, 0, 0.27, 0);
@@ -288,7 +288,7 @@
     }, 18);
 
     /* 20 · 螺丝盒 */
-    def("tray", "SCREWS", "M2 · M3", [-1.4, 2.0], -0.2, 0.16, function () {
+    def("tray", "螺丝盒", "SCREWS · M2 · M3", [-1.4, 2.0], -0.2, 0.16, function () {
       var g = new THREE.Group();
       g.add(mesh(new THREE.CylinderGeometry(0.2, 0.16, 0.1, 20), M.plastic, 0, 0.05, 0));
       g.add(mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.02, 20), M.dark, 0, 0.1, 0));
@@ -302,7 +302,7 @@
     }, 19);
 
     /* 21 · 粉色便签 */
-    def("note1", "STICKY NOTE", "corner", [-2.7, -1.65], 0.35, 0.1, function () {
+    def("note1", "粉色便签", "STICKY NOTE · CORNER", [-2.7, -1.65], 0.35, 0.1, function () {
       var g = new THREE.Group();
       var p = mesh(new THREE.PlaneGeometry(0.5, 0.5),
         new THREE.MeshStandardMaterial({ map: LS8.Textures.note("#f6c6dc", "#8c2f5e", ["LNA 5V from J11", "NOT the 12V rail!", "dip 2 + BPF", "NF 0.6 dB"], -0.06), roughness: 0.9, side: THREE.DoubleSide }), 0, 0.006, 0, true, true);
@@ -312,7 +312,7 @@
     }, 20);
 
     /* 22 · 白+蓝+黄便签组 */
-    def("note2", "NOTES ×3", null, [0.5, 1.85], -0.18, 0.12, function () {
+    def("note2", "便签组 ×3", "NOTES ×3", [0.5, 1.85], -0.18, 0.12, function () {
       var g = new THREE.Group();
       var mk = function (bg, ink, lines, dx, dz, rot, w) {
         var p = mesh(new THREE.PlaneGeometry(w, w),

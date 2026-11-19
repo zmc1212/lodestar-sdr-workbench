@@ -21,27 +21,27 @@
   function buildDOM() {
     var dash = document.getElementById("dash");
     dash.innerHTML =
-      '<section class="panel"><header><i class="dot teal"></i><b>SPECTRUM</b><span class="meta">RX-1 · 1 MHZ SPAN</span></header>' +
+      '<section class="panel"><header><i class="dot teal"></i><b>频谱</b><span class="meta">RX-1 · 1 MHZ SPAN</span></header>' +
       '<div class="body"><canvas id="c-spec"></canvas><div class="axis"><span>437.3 MHz</span><span>438.3 MHz</span></div></div></section>' +
 
-      '<section class="panel"><header><i class="dot pink"></i><b>I/Q</b><span class="meta">QPSK · 96k</span></header>' +
+      '<section class="panel"><header><i class="dot pink"></i><b>IQ 星座</b><span class="meta">QPSK · 96k</span></header>' +
       '<div class="body"><canvas id="c-iq"></canvas><div class="iq-stats">' +
       '<div class="r"><span>EVM</span><b id="iq-evm">—</b></div>' +
       '<div class="r"><span>RMS</span><b id="iq-rms">—</b></div>' +
       '<div class="r"><span>SNR</span><b id="iq-snr">—</b></div>' +
-      '<div class="iq-packets"><div class="k">PACKETS</div><div class="v" id="iq-pk">000</div></div>' +
-      '<div class="iq-chips"><span class="chip" id="ch-spa">SPA</span><span class="chip" id="ch-ter">TER</span><span class="chip" id="ch-lock">LOCK</span></div>' +
+      '<div class="iq-packets"><div class="k">数据包 PACKETS</div><div class="v" id="iq-pk">000</div></div>' +
+      '<div class="iq-chips"><span class="chip" id="ch-spa">扫描 SPA</span><span class="chip" id="ch-ter">跟踪 TER</span><span class="chip" id="ch-lock">锁定 LOCK</span></div>' +
       '</div></div></section>' +
 
-      '<section class="panel"><header><i class="dot green"></i><b>CLOCK</b><span class="meta">GPSDO · 10 MHZ</span></header>' +
+      '<section class="panel"><header><i class="dot green"></i><b>时钟</b><span class="meta">GPSDO · 10 MHZ</span></header>' +
       '<div class="body"><div class="clk-bars">' + new Array(13).join("<i></i>") + '</div>' +
       '<div class="clk-right"><div class="clk-row"><canvas id="c-clock"></canvas><span>10 MHZ<br>REF OUT</span></div>' +
-      '<div class="clk-row"><span>ERROR</span><span id="clk-err">—— Hz</span></div>' +
+      '<div class="clk-row"><span>误差 ERROR</span><span id="clk-err">—— Hz</span></div>' +
       '<div class="clk-ppm"><div class="v" id="clk-ppm">0.0 <small>ppm</small></div></div>' +
-      '<div class="clk-temp">TEMP <b id="clk-temp">24.0</b> °C · <span id="clk-utc">UTC --:--:--</span></div>' +
+      '<div class="clk-temp">温度 TEMP <b id="clk-temp">24.0</b> °C · <span id="clk-utc">UTC --:--:--</span></div>' +
       '</div></div></section>' +
 
-      '<section class="panel"><header><i class="dot blue"></i><b>RAILS</b><span class="meta">5 SUPPLIES</span></header>' +
+      '<section class="panel"><header><i class="dot blue"></i><b>电源轨</b><span class="meta">5 SUPPLIES</span></header>' +
       '<div class="body"><div id="rail-rows"></div>' +
       '<div class="rails-foot"><div class="v" id="rail-w">0.00 <small>W</small></div><span class="chip" id="rail-chip">12V</span></div>' +
       '</div></section>' +
@@ -261,9 +261,9 @@
     var mm = String(Math.floor(up / 60)).padStart(2, "0");
     var ss = String(Math.floor(up % 60)).padStart(2, "0");
     var ds = Math.floor((up % 1) * 10);
-    document.getElementById("fpga-up").textContent = "UP " + mm + ":" + ss + "." + ds;
+    document.getElementById("fpga-up").textContent = "运行 " + mm + ":" + ss + "." + ds;
     var seat = document.getElementById("fpga-seat");
-    seat.textContent = st.seated + " / 22 SEATED";
+    seat.textContent = "已就位 " + st.seated + " / 22";
     seat.style.color = st.seated >= 22 ? "#e9c93c" : "rgba(232,228,216,.55)";
   }
 

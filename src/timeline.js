@@ -1,58 +1,58 @@
 /* 时间线：装配 → 布线 → 上电 → 调谐 → 扫描 → 跟踪 → 锁定 → 归位（循环） */
 (function (LS8) {
   var phases = [
-    { id: "assembly", name: "ASSEMBLY", dur: 16.4, dot: "yellow",
+    { id: "assembly", name: "整机装配 · LS-8 SDR", dur: 16.4, dot: "yellow",
       cam: { theta: -0.62, phi: 0.96, r: 8.2, target: [0, 0.25, 0] }, drift: 0.045 },
-    { id: "cabling", name: "CABLING · PORT TO PORT", dur: 4.6, dot: "teal",
+    { id: "cabling", name: "布线连接 · PORT TO PORT", dur: 4.6, dot: "teal",
       cam: { theta: -0.95, phi: 0.88, r: 6.2, target: [-0.5, 0.2, 0.3] }, drift: 0.02 },
-    { id: "power", name: "POWER ON · 13.5V IN → 12V RAIL", dur: 2.8, dot: "green",
+    { id: "power", name: "上电 · 13.5V 输入 → 12V 电源轨", dur: 2.8, dot: "green",
       cam: { theta: -0.7, phi: 0.85, r: 4.4, target: [0.62, 0.25, 0.12] }, drift: 0.015 },
-    { id: "tune", name: "TUNE · DISPLAY · PMOD", dur: 3.2, dot: "blue",
+    { id: "tune", name: "调谐 · 数码显示 · PMOD", dur: 3.2, dot: "blue",
       cam: { theta: -1.3, phi: 0.98, r: 3.6, target: [0.3, 0.15, 1.25] }, drift: 0.012 },
-    { id: "scan", name: "SCAN · RF FRONT END", dur: 3.0, dot: "blue",
+    { id: "scan", name: "频谱扫描 · 射频前端", dur: 3.0, dot: "blue",
       cam: { theta: -0.45, phi: 0.85, r: 4.8, target: [-1.2, 0.15, 0.3] }, drift: 0.02 },
-    { id: "track", name: "FPGA · DDR3L · JTAG", dur: 3.0, dot: "blue",
+    { id: "track", name: "卫星跟踪 · FPGA · DDR3L · JTAG", dur: 3.0, dot: "blue",
       cam: { theta: -1.9, phi: 0.88, r: 4.0, target: [0.9, 0.2, -0.1] }, drift: 0.012 },
-    { id: "lock", name: "PATCH · FILTER · LNA · GPS", dur: 3.2, dot: "pink",
+    { id: "lock", name: "载波锁定 · PATCH · FILTER · LNA · GPS", dur: 3.2, dot: "pink",
       cam: { theta: -2.6, phi: 0.95, r: 4.4, target: [-2.0, 0.15, 0.8] }, drift: 0.015 },
-    { id: "home", name: "PARTS HOME", dur: 5.4, dot: "yellow",
+    { id: "home", name: "零件归位", dur: 5.4, dot: "yellow",
       cam: { theta: -0.62, phi: 0.98, r: 8.6, target: [0, 0.25, 0] }, drift: 0.03 }
   ];
 
   var PINNED = {
     cabling: function () {
       return [
-        { id: "p-led", obj: LS8.Parts.group("led"), text: "8 DIGIT · PMOD" },
-        { id: "p-enc", obj: LS8.Parts.group("encoder"), text: "ENCODER · BAND DIAL" },
-        { id: "p-lg8", obj: LS8.Parts.group("logic8"), text: "TRIGGER · PPS · 8 CH", tone: "white" }
+        { id: "p-led", obj: LS8.Parts.group("led"), text: "8 位数码管 · PMOD", sub: "8 DIGIT · PMOD" },
+        { id: "p-enc", obj: LS8.Parts.group("encoder"), text: "调谐编码器 · 波段旋钮", sub: "ENCODER · BAND DIAL" },
+        { id: "p-lg8", obj: LS8.Parts.group("logic8"), text: "触发 · PPS · 8 通道", sub: "TRIGGER · PPS · 8 CH", tone: "white" }
       ];
     },
     power: function () {
-      return [{ id: "p-board", obj: LS8.Scene3D.board, text: "13.5V IN → 12V RAIL" }];
+      return [{ id: "p-board", obj: LS8.Scene3D.board, text: "13.5V 输入 → 12V 电源轨", sub: "13.5V IN → 12V RAIL" }];
     },
     tune: function () {
       return [
-        { id: "p-led", obj: LS8.Parts.group("led"), text: "8 DIGIT · 437 MHZ" },
-        { id: "p-enc", obj: LS8.Parts.group("encoder"), text: "TUNE · 10.2 PPM", tone: "white" }
+        { id: "p-led", obj: LS8.Parts.group("led"), text: "数码管 · 437 MHZ", sub: "8 DIGIT · 437 MHZ" },
+        { id: "p-enc", obj: LS8.Parts.group("encoder"), text: "调谐 · 10.2 PPM", sub: "TUNE · 10.2 PPM", tone: "white" }
       ];
     },
     scan: function () {
       return [
-        { id: "p-lg8", obj: LS8.Parts.group("logic8"), text: "LOGIC 8 · 24 MS/S" },
-        { id: "p-mtr", obj: LS8.Parts.group("meter"), text: "METER · 12 V RAIL", tone: "white" }
+        { id: "p-lg8", obj: LS8.Parts.group("logic8"), text: "逻辑分析仪 · 24 MS/S", sub: "LOGIC 8 · 24 MS/S" },
+        { id: "p-mtr", obj: LS8.Parts.group("meter"), text: "万用表 · 12V 轨", sub: "METER · 12 V RAIL", tone: "white" }
       ];
     },
     track: function () {
       return [
-        { id: "p-board", obj: LS8.Scene3D.board, text: "FPGA · DDR3L · JTAG" },
-        { id: "p-tch", obj: LS8.Parts.group("touch"), text: "JTAG · RIBBON TO POD", tone: "white" }
+        { id: "p-board", obj: LS8.Scene3D.board, text: "主控芯片 · FPGA + DDR3L", sub: "FPGA · DDR3L · JTAG" },
+        { id: "p-tch", obj: LS8.Parts.group("touch"), text: "JTAG 排线 · 至调试器", sub: "JTAG · RIBBON TO POD", tone: "white" }
       ];
     },
     lock: function () {
       return [
-        { id: "p-ptc", obj: LS8.Parts.group("patch"), text: "PATCH · RHCP · 7 DBIC" },
-        { id: "p-cav", obj: LS8.Parts.group("cavity"), text: "CAVITY BPF · 5 POLE" },
-        { id: "p-lna", obj: LS8.Parts.group("lna"), text: "LNA · NF 0.6 DB" }
+        { id: "p-ptc", obj: LS8.Parts.group("patch"), text: "贴片天线 · RHCP · 7 dBic", sub: "PATCH · RHCP · 7 DBIC" },
+        { id: "p-cav", obj: LS8.Parts.group("cavity"), text: "腔体滤波器 · 5 阶", sub: "CAVITY BPF · 5 POLE" },
+        { id: "p-lna", obj: LS8.Parts.group("lna"), text: "低噪放 · NF 0.6 dB", sub: "LNA · NF 0.6 DB" }
       ];
     }
   };
@@ -88,6 +88,9 @@
   function smooth(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
 
   var PHASE_SFX = { cabling: "insert", power: "power", lock: "chime", home: "whoosh" };
+
+  /* 状态卡 MODE 显示文案（逻辑态 state.mode 仍为英文代号，比较逻辑不变） */
+  var MODE_TXT = { BAND: "频段 BAND", SCAN: "扫描 SCAN", TRACK: "跟踪 TRACK", LOCK: "锁定 LOCK" };
 
   function enterPhase(i) {
     idx = i; pt = 0;
@@ -220,14 +223,14 @@
     }
 
     /* ---- DOM 状态卡 / 阶段胶囊 ---- */
-    dom.mode.textContent = state.power || idx > 1 ? state.mode : "BAND";
+    dom.mode.textContent = state.power || idx > 1 ? (MODE_TXT[state.mode] || state.mode) : MODE_TXT.BAND;
     dom.mode.className = "mode" + (state.mode === "LOCK" ? " lock" : "");
     dom.freq.textContent = (ph.id === "tune" || state.mode === "SCAN" || state.mode === "TRACK" || state.mode === "LOCK")
       ? state.freq.toFixed(3) + " MHz" : "—";
     dom.dop.textContent = state.dop ? (state.dop >= 0 ? "+" : "") + (state.dop / 1000).toFixed(2) + " kHz" : "— kHz";
     dom.parts.textContent = state.parts + " / 22";
     var label = ph.name;
-    if (ph.id === "assembly") label = "ASSEMBLY · " + state.parts + " / 22";
+    if (ph.id === "assembly") label = "整机装配 · " + state.parts + " / 22";
     dom.pill.textContent = label;
     dom.dot.className = ph.dot;
 
